@@ -9,7 +9,11 @@
  Пример:
    forEach([1, 2, 3], (el) => console.log(el)); // выведет каждый элемент массива
  */
-function forEach() {}
+function forEach(array, fn) {
+  for (let i = 0; i < array.length; i++) {
+    fn(array[i], i, array);
+  }
+}
 
 /*
  Задание 2:
@@ -21,7 +25,13 @@ function forEach() {}
    const newArray = map([1, 2, 3], (el) => el ** 2);
    console.log(newArray); // выведет [1, 4, 9]
  */
-function map() {}
+function map(array, fn) {
+  const newArray = [];
+  for (let i = 0; i < array.length; i++) {
+    newArray.push(fn(array[i], i, array));
+  }
+  return newArray;
+}
 
 /*
  Задание 3:
@@ -33,7 +43,22 @@ function map() {}
    const sum = reduce([1, 2, 3], (all, current) => all + current);
    console.log(sum); // выведет 6
  */
-function reduce() {}
+function reduce(array, fn, initialValue) {
+  let startIndex = 0;
+  let accumulator =
+    initialValue === false || initialValue == null ? array[0] : initialValue;
+
+  if (initialValue === undefined) {
+    startIndex = 1;
+    accumulator = array[0];
+  }
+
+  for (let i = startIndex; i < array.length; i++) {
+    accumulator = fn(accumulator, array[i], i, array);
+  }
+
+  return accumulator;
+}
 
 /*
  Задание 4:
@@ -44,6 +69,18 @@ function reduce() {}
    const keys = upperProps({ name: 'Сергей', lastName: 'Петров' });
    console.log(keys) // выведет ['NAME', 'LASTNAME']
  */
-function upperProps() {}
+function upperProps(Obj) {
+  const newMassive = [];
+  for (const key in Obj) {
+    newMassive.push(key.toUpperCase());
+  }
+  return newMassive;
+
+  // let upperMassive = [];
+  // for (let key in Obj) {
+  //   upperMassive.push();
+  // }
+  // return upperMassive;
+}
 
 export { forEach, map, reduce, upperProps };

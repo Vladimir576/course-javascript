@@ -20,7 +20,23 @@
    isAllTrue([1, 2, 3, 4, 5], n => n < 10) // вернет true (потому что все элементы массива меньше 10)
    isAllTrue([100, 2, 3, 4, 5], n => n < 10) // вернет false (потому что как минимум первый элемент больше 10)
  */
-function isAllTrue(array, fn) {}
+function isAllTrue(array, fn) {
+  if (!Array.isArray(array) || array.length === 0) {
+    throw new Error('empty array');
+  } else if (typeof fn !== 'function') {
+    throw new Error('fn is not a function');
+  }
+
+  for (const valueArr of array) {
+    const fnValue = fn(valueArr);
+
+    if (fnValue === false) {
+      return false;
+    }
+  }
+
+  return true;
+}
 
 /*
  Задание 2:
@@ -42,7 +58,21 @@ function isAllTrue(array, fn) {}
    isSomeTrue([1, 2, 30, 4, 5], n => n > 20) // вернет true (потому что в массиве есть хотя бы один элемент больше 20)
    isSomeTrue([1, 2, 3, 4, 5], n => n > 20) // вернет false (потому что в массиве нет ни одного элемента больше 20)
  */
-function isSomeTrue(array, fn) {}
+function isSomeTrue(array, fn) {
+  if (!Array.isArray(array) || array.length === 0) {
+    throw new Error('empty array');
+  } else if (typeof fn !== 'function') {
+    throw new Error('fn is not a function');
+  }
+
+  for (const i of array) {
+    const fnValue = fn(i);
+    if (fnValue === true) {
+      return true;
+    }
+  }
+  return false;
+}
 
 /*
  Задание 3:
@@ -56,35 +86,95 @@ function isSomeTrue(array, fn) {}
    - fn не является функцией (с текстом "fn is not a function")
      для проверки на функцию вам может помочь оператор typeof
  */
-function returnBadArguments() {}
+function returnBadArguments(fn, ...args) {
+  const massiveArgs = [];
+
+  if (typeof fn !== 'function') {
+    throw new Error('fn is not a function');
+  }
+
+  if (args.length === 0) {
+    return massiveArgs;
+  }
+  for (const i of args) {
+    try {
+      fn(i);
+    } catch (e) {
+      massiveArgs.push(i);
+    }
+  }
+  return massiveArgs;
+}
 
 /*
  Задание 4:
-
+ 
  4.1: Функция calculator имеет параметр number (по умолчанию - 0)
-
+ 
  4.2: Функция calculator должна вернуть объект, у которого должно быть несколько методов:
    - sum - складывает number с переданными аргументами
    - dif - вычитает из number переданные аргументы
    - div - делит number на первый аргумент. Результат делится на следующий аргумент (если передан) и так далее
    - mul - умножает number на первый аргумент. Результат умножается на следующий аргумент (если передан) и так далее
-
+ 
  Количество передаваемых в методы аргументов заранее неизвестно
-
+ 
  4.3: Необходимо выбрасывать исключение в случаях:
    - number не является числом (с текстом "number is not a number")
-   - какой-либо из аргументов div является нулем (с текстом "division by 0")
-
+   - какой-либо из аргументов div является нулем (с текстом "division by 0") 
+ 
  Пример:
    const myCalc = calculator(10);
-
+ 
    console.log(calc.sum(1, 2, 3)); // выведет 16 (10 + 1 + 2 + 3)
    console.log(calc.dif(1, 2, 3)); // выведет 5 (10 - 1 - 2 - 3)
    console.log(calc.mul(1, 2, 3)); // выведет 60 (10 * 1 * 2 * 3)
    console.log(calc.div(2, 2)); // выведет 2.5 (10 / 2 / 2)
    console.log(calc.div(2, 0)); // выбросит исключение, потому что один из аргументов равен 0
  */
-function calculator(number) {}
+//  - sum - складывает number с переданными аргументами
+//  - dif - вычитает из number переданные аргументы
+//  - div - делит number на первый аргумент. Результат делится на следующий аргумент (если передан) и так далее
+//  - mul - умножает number на первый аргумент. Результат умножается на следующий аргумент (если передан) и так далее
+function calculator(number = 0, ...args) {
+  if (typeof number !== 'number') {
+    throw new Error('number is not a number');
+  }
+
+  return {
+    sum: function (...args) {
+      let sumRes = number;
+      for (const i of args) {
+        sumRes += i;
+      }
+      return sumRes;
+    },
+    dif: function (...args) {
+      let difRes = number;
+      for (const i of args) {
+        difRes = difRes - i;
+      }
+      return difRes;
+    },
+    div: function (...args) {
+      let divRes = number;
+      for (const i of args) {
+        if (i === 0 || divRes === 0) {
+          throw new Error('division by 0');
+        }
+        divRes /= i;
+      }
+      return divRes;
+    },
+    mul: function (...args) {
+      let mulRes = number;
+      for (const i of args) {
+        mulRes *= i;
+      }
+      return mulRes;
+    },
+  };
+}
 
 /* При решении задач, постарайтесь использовать отладчик */
 
