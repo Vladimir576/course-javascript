@@ -11,6 +11,9 @@
    createDivWithText('loftschool') // создаст элемент div, поместит в него 'loftschool' и вернет созданный элемент
  */
 function createDivWithText(text) {
+  const newElement = document.createElement('div');
+  newElement.textContent = text;
+  return document.body.appendChild(newElement);
 }
 
 /*
@@ -22,6 +25,8 @@ function createDivWithText(text) {
    prepend(document.querySelector('#one'), document.querySelector('#two')) // добавит элемент переданный первым аргументом в начало элемента переданного вторым аргументом
  */
 function prepend(what, where) {
+  //  return  where.insertBefore(what, where.firstChild);
+  return where.prepend(what);
 }
 
 /*
@@ -44,6 +49,14 @@ function prepend(what, where) {
    findAllPSiblings(document.body) // функция должна вернуть массив с элементами div и span т.к. следующим соседом этих элементов является элемент с тегом P
  */
 function findAllPSiblings(where) {
+  const newArr = [];
+  const elements = where.children;
+  for (const node of elements) {
+    if (node.nextSibling && node.nextSibling.tagName === 'P') {
+      newArr.push(node);
+    }
+  }
+  return newArr;
 }
 
 /*
@@ -65,11 +78,9 @@ function findAllPSiblings(where) {
  */
 function findError(where) {
   const result = [];
-
-  for (const child of where.childNodes) {
+  for (const child of where.children) {
     result.push(child.textContent);
   }
-
   return result;
 }
 
@@ -86,6 +97,12 @@ function findError(where) {
    должно быть преобразовано в <div></div><p></p>
  */
 function deleteTextNodes(where) {
+  const elements = where.childNodes;
+  for (const node of elements) {
+    if (node.nodeType === Node.TEXT_NODE) {
+      where.removeChild(node);
+    }
+  }
 }
 
 /*
@@ -109,6 +126,65 @@ function deleteTextNodes(where) {
    }
  */
 function collectDOMStat(root) {
+  // БЫЛО stats
+  const stat = {
+    tags: {},
+    classes: {},
+    texts: 0,
+  };
+
+  function scan(root) {
+    for (const child of root.childNodes) {
+      if (child.nodeType === Node.TEXT_NODE) {
+        stat.texts++;
+      } else if (child.nodeType === Node.ELEMENT_NODE) {
+        if (child.tagName in stat.tags) {
+          stat.tags[child.tagName]++;
+        } else {
+          stat.tags[child.tagName] = 1;
+        }
+
+        for (const className of child.classList) {
+          if (className in stat.classes) {
+            stat.classes[className]++;
+          } else {
+            stat.classes[className] = 1;
+          }
+        }
+        scan(child);
+      }
+    }
+  }
+
+  // const allChildren = root.childNodes;
+  // for (const i of allChildren) {
+  //   if (i instanceof Element) {
+  //     const tag = i.tagName.toUpperCase();
+  //     if (stats.tags[tag]) {
+  //       stats.tags[tag] += 1;
+  //     } else {
+  //       stats.tags[tag] = 1;
+  //     }
+  //   }
+  //   if (i.nodeType === Node.ELEMENT_NODE) {
+  //     const classList = i.classList;
+  //     if (classList.length > 0) {
+  //       classList.forEach((className) => {
+  //         if (stats.classes[className]) {
+  //           stats.classes[className] += 1;
+  //         } else {
+  //           stats.classes[className] = 1;
+  //         }
+  //       });
+  //     }
+  //   }
+  //   if (i.nodeType === Node.TEXT_NODE && i.textContent.trim()) {
+  //     stats.texts++;
+  //   }
+  // }
+  // return stats;
+  scan(root);
+  return stat;
 }
 
 export {
