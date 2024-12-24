@@ -12,7 +12,7 @@ function getNextPhoto() {
 
 
     var friendFirsName = randomFriend.firstName;
-    
+
     var friendURL = randomFriend.avatar;
     return {
         name: friendFirsName,
@@ -20,5 +20,23 @@ function getNextPhoto() {
     }
 
 }
+
+
+import pages from './pages';
+import openPage from './pages'
+
+import('./styles.css');
+
+const pageNames = ['login', 'main', 'profile'];
+
+
+document.addEventListener('click', () => {
+
+    let url = Math.floor(Math.random() * pageNames.length);
+    let selectedPage = pageNames[url];
+    openPage(selectedPage)
+
+});
+
 
 
