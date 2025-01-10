@@ -10,7 +10,6 @@ function getNextPhoto() {
     // friendsDB = Массив объектов,где в одном объекте информация об одном человека
     var randomFriend = random(friendsDB)
 
-
     var friendFirsName = randomFriend.firstName;
 
     var friendURL = randomFriend.avatar;
@@ -22,21 +21,21 @@ function getNextPhoto() {
 }
 
 
-import pages from './pages';
-import openPage from './pages'
 
+import openPage from './pages'
+import pages from './pages';
 import('./styles.css');
 
 const pageNames = ['login', 'main', 'profile'];
 
 
-document.addEventListener('click', () => {
+import mainPage from './mainPage';
+import loginPage from './loginPage';
 
-    let url = Math.floor(Math.random() * pageNames.length);
-    let selectedPage = pageNames[url];
-    openPage(selectedPage)
+pages.openPage('login');
+loginPage.handleEvents();
+mainPage.handleEvents();
 
-});
 
 
 

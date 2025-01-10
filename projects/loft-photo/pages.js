@@ -4,6 +4,8 @@ const pagesMap = {
     profile: '.page-profile',
 };
 
+const pageNames = ['login', 'main', 'profile'];
+
 export default {
     openPage(name) {
         let main = document.querySelector('.page-main');
