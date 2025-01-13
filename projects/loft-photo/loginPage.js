@@ -17,7 +17,7 @@ export default {
         }
         catch (e) {
           pages.openPage('login');
-          console.warn("Блок catch сработал");
+          console.warn("Блок catch сработал", e);
 
         }
       });
