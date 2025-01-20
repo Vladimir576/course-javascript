@@ -1,4 +1,4 @@
-
+import profilePage from './profilePage'; 
 var random = function getRandomElement(array) {
     var randomIndex = parseInt(Math.random() * array.length)
     return array[randomIndex]
@@ -36,6 +36,4 @@ pages.openPage('login');
 loginPage.handleEvents();
 mainPage.handleEvents();
 
-
-
-
+profilePage.handleEvents();

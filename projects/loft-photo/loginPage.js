@@ -11,7 +11,6 @@ export default {
         try {
           await model.login();
           await model.init();
-          console.warn('Catch не сработал')
           pages.openPage('main');
           await mainPage.getNextPhoto();
         }
